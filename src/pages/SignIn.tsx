@@ -1,7 +1,21 @@
+import { Input } from "../components/Input";
+
 export const SignIn = () => {
     return (
-        <div>
-            <h1>SignIn</h1>
-        </div>
+        <form className="w-full flex flex-col gap-4">
+            <Input
+                required
+                legend="E-mail"
+                type="email"
+                placeholder="seu@gmail.com"
+            />
+
+            <Input
+                required
+                legend="Senha"
+                type="password"
+                placeholder="123456"
+            />
+        </form>
     );
 }
