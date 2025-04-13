@@ -1,4 +1,5 @@
 import { Outlet } from "react-router"
+import { Header } from "./Header"
 
 export const AppLayout = () => {
     return (
@@ -8,6 +9,7 @@ export const AppLayout = () => {
           text-gray-100"
         >
             <main className="p-3 w-full md:w-auto">
+                <Header />
                 <Outlet />
             </main>
         </div>
