@@ -12,6 +12,7 @@ export const Button = ({ children, isLoading, type = "button", ...rest }: Props)
             type={type}
             {...rest}
         >
+            
             {children}
         </button>
     );
