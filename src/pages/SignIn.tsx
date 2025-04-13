@@ -1,3 +1,4 @@
+import { Button } from "../components/Button";
 import { Input } from "../components/Input";
 
 export const SignIn = () => {
@@ -16,6 +17,10 @@ export const SignIn = () => {
                 type="password"
                 placeholder="123456"
             />
+
+            <Button isLoading>
+                Entrar
+            </Button>
         </form>
     );
 }
