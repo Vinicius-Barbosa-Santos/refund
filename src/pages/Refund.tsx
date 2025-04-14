@@ -1,4 +1,5 @@
 import { Input } from "../components/Input"
+import { Select } from "../components/Select"
 
 export const Refund = () => {
     return (
@@ -8,9 +9,14 @@ export const Refund = () => {
                 <p className="text-sm text-gray-200 mt-2 mb-4">Dados da despesa para solicitar o reembolso. </p>
             </header>
 
-            <Input 
+            <Input
                 required
                 legend="Nome da solicitação"
+            />
+
+            <Select
+                required
+                legend="Categoria"
             />
         </form>
     )
