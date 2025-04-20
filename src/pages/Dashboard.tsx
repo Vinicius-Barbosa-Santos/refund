@@ -1,5 +1,8 @@
+import searchSvg from "../assets/search.svg";
+
 import { useState } from "react";
 import { Input } from "../components/Input";
+import { Button } from "../components/Button";
 
 export const Dashboard = () => {
     const [name, setName] = useState("")
@@ -15,6 +18,10 @@ export const Dashboard = () => {
 
             <form onSubmit={fetchRefunds} className="flex flex-1 items-center justify-between pb-6 border-b-[1px] border-b-gray-400 md:flex-row gap-2 mt-6">
                 <Input onChange={(e) => setName(e.target.value)} placeholder="Pesquisar pelo nome" />
+
+                <Button type="submit" variant="icon">
+                    <img className="w-5" src={searchSvg} alt="" />
+                </Button>
             </form>
         </div>
     );
