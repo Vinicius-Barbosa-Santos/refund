@@ -7,6 +7,7 @@ import { RefundItem } from "../components/RefundItem";
 
 import { CATEGORIES } from "../utils/categories";
 import { formatCurrency } from "../utils/formatCurrency";
+import { Pagination } from "../components/Pagination";
 
 const REFUND_EXAMPLE = {
     id: "123",
@@ -49,6 +50,11 @@ export const Dashboard = () => {
                 <RefundItem data={REFUND_EXAMPLE} />
                 <RefundItem data={REFUND_EXAMPLE} />
             </div>
+
+            <Pagination 
+                current={1}
+                total={10}
+            />
         </div>
     );
 }
