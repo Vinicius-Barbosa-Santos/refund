@@ -22,3 +22,15 @@ select {
   background-position: right 0.7rem top 50%;
   background-image: url("./assets/chevron-down.svg");
 }
+
+::-webkit-scrollbar {
+  width: 0.4rem;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #e4ece9;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
