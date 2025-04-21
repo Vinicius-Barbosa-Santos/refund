@@ -17,13 +17,27 @@ const REFUND_EXAMPLE = {
     categoryImg: CATEGORIES["transport"].icon
 }
 
-
 export const Dashboard = () => {
     const [name, setName] = useState("")
+    const [page, setPage] = useState(1)
+    const [totalOfPages, setTotalOfPages] = useState(10)
 
     const fetchRefunds = (e: React.FormEvent) => {
         e.preventDefault()
         console.log(name)
+    }
+
+    const handlePagination = (action: "next" | "previous") => {
+        setPage((prevPage) => {
+            if(action === "next" && prevPage < totalOfPages) {
+                return prevPage + 1
+            }
+
+            if(action === "previous" && prevPage > 1) {
+                return prevPage - 1
+            }
+            return prevPage
+        })
     }
 
     return (
@@ -52,8 +66,10 @@ export const Dashboard = () => {
             </div>
 
             <Pagination 
-                current={1}
-                total={10}
+                current={page}
+                total={totalOfPages}
+                onNext={() => handlePagination("next")}
+                onPrevious={() => handlePagination("previous")}
             />
         </div>
     );
