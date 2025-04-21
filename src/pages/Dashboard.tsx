@@ -3,7 +3,7 @@ import searchSvg from "../assets/search.svg";
 import { useState } from "react";
 import { Input } from "../components/Input";
 import { Button } from "../components/Button";
-import { RefundItem } from "../components/RefundItem";
+import { RefundItem, RefundItemProps } from "../components/RefundItem";
 
 import { CATEGORIES } from "../utils/categories";
 import { formatCurrency } from "../utils/formatCurrency";
@@ -21,6 +21,7 @@ export const Dashboard = () => {
     const [name, setName] = useState("")
     const [page, setPage] = useState(1)
     const [totalOfPages, setTotalOfPages] = useState(10)
+    const [refunds, setRefunds] = useState<RefundItemProps[]>([REFUND_EXAMPLE])
 
     const fetchRefunds = (e: React.FormEvent) => {
         e.preventDefault()
@@ -29,11 +30,11 @@ export const Dashboard = () => {
 
     const handlePagination = (action: "next" | "previous") => {
         setPage((prevPage) => {
-            if(action === "next" && prevPage < totalOfPages) {
+            if (action === "next" && prevPage < totalOfPages) {
                 return prevPage + 1
             }
 
-            if(action === "previous" && prevPage > 1) {
+            if (action === "previous" && prevPage > 1) {
                 return prevPage - 1
             }
             return prevPage
@@ -52,20 +53,15 @@ export const Dashboard = () => {
                 </Button>
             </form>
 
-            <div className="mt-6 flex flex-col gap-4 max-h-[342px] overflow-y-scroll">
-                <RefundItem data={REFUND_EXAMPLE} />
-                <RefundItem data={REFUND_EXAMPLE} />
-                <RefundItem data={REFUND_EXAMPLE} />
-                <RefundItem data={REFUND_EXAMPLE} />
-                <RefundItem data={REFUND_EXAMPLE} />
-                <RefundItem data={REFUND_EXAMPLE} />
-                <RefundItem data={REFUND_EXAMPLE} />
-                <RefundItem data={REFUND_EXAMPLE} />
-                <RefundItem data={REFUND_EXAMPLE} />
-                <RefundItem data={REFUND_EXAMPLE} />
+            <div className="my-6 flex flex-col gap-4 max-h-[342px] overflow-y-scroll">
+                {
+                    refunds.map((item) => (
+                        <RefundItem key={item.id} data={item} href={`/refund/${item.id}`} />
+                    ))
+                }
             </div>
 
-            <Pagination 
+            <Pagination
                 current={page}
                 total={totalOfPages}
                 onNext={() => handlePagination("next")}

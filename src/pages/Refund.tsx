@@ -4,25 +4,24 @@ import { Select } from "../components/Select"
 import { CATEGORIES, CATEGORIES_KEYS } from "../utils/categories"
 import { Upload } from "../components/Upload"
 import { Button } from "../components/Button"
-import { useNavigate } from "react-router"
+import { useNavigate, useParams } from "react-router"
 
 export const Refund = () => {
-    const [name, setName] = useState("")
-    const [amount, setAmount] = useState("")
-    const [category, setCategory] = useState("")
+    const [name, setName] = useState("Teste")
+    const [amount, setAmount] = useState("34")
+    const [category, setCategory] = useState("transport")
     const [isLoading, setIsLoading] = useState(false)
     const [filename, setFilename] = useState<File | null>(null)
 
     const navigate = useNavigate()
+    const params = useParams<{ id: string }>()
 
     const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        console.log({
-            name,
-            amount,
-            category,
-            filename
-        })
+
+        if(params.id) {
+            return navigate(-1)
+        }
 
         navigate("/confirm", { state: { fromSubmit: true } })
     }
@@ -37,6 +36,7 @@ export const Refund = () => {
                 required
                 legend="Nome da solicitação"
                 value={name}
+                disabled={!!params.id}
                 onChange={(e) => setName(e.target.value)}
             />
 
@@ -46,6 +46,7 @@ export const Refund = () => {
                     value={category}
                     onChange={(e) => setCategory(e.target.value)}
                     legend="Categoria"
+                    disabled={!!params.id}
                 >
                     {
                         CATEGORIES_KEYS.map((category) => (
@@ -58,17 +59,19 @@ export const Refund = () => {
                     required
                     legend="Valor"
                     value={amount}
+                    disabled={!!params.id}
                     onChange={(e) => setAmount(e.target.value)}
                 />
             </div>
 
             <Upload
+                disabled={!!params.id}
                 filename={filename && filename.name}
                 onChange={(e) => e.target.files && setFilename(e.target.files[0])}
             />
 
             <Button isLoading={isLoading} type="submit">
-                Enviar
+                {params.id ? "Voltar" : "Enviar"}
             </Button>
         </form>
     )
