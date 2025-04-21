@@ -6,6 +6,8 @@ import { Upload } from "../components/Upload"
 import { Button } from "../components/Button"
 import { useNavigate, useParams } from "react-router"
 
+import fileSvg from '../assets/file.svg'
+
 export const Refund = () => {
     const [name, setName] = useState("Teste")
     const [amount, setAmount] = useState("34")
@@ -19,7 +21,7 @@ export const Refund = () => {
     const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
-        if(params.id) {
+        if (params.id) {
             return navigate(-1)
         }
 
@@ -64,11 +66,18 @@ export const Refund = () => {
                 />
             </div>
 
-            <Upload
+            {params.id ? (
+                <a href="https://www.rocketseat.com.br/" target="_blank" className="text-sm text-green-100 
+                    font-semibold flex items-center justify-center gap-2 my-6 hover:opacity-70 transition ease-linear">
+                    <img src={fileSvg} alt="Ícone do arquivo" />
+                    Abrir comprovante!
+                </a>
+            ) : <Upload
                 disabled={!!params.id}
                 filename={filename && filename.name}
                 onChange={(e) => e.target.files && setFilename(e.target.files[0])}
             />
+            }
 
             <Button isLoading={isLoading} type="submit">
                 {params.id ? "Voltar" : "Enviar"}
