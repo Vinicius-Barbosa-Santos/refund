@@ -1,6 +1,19 @@
 import { useState } from "react";
 import { Button } from "../components/Button";
 import { Input } from "../components/Input";
+import * as z from "zod";
+
+const signUpSchema = z.object({
+    name: z.string().trim().min(1, { message: "Informe o nome" }),
+    email: z
+        .string().trim()
+        .email({ message: "E-mail Inválido!" }),
+    password: z.string().min(6, { message: "A senha deve ter no mínimo 6 caracteres!" }),
+    passwordConfirm: z.string({ message: "Confirmação de senha é obrigatória!" })
+}).refine((data) => data.password === data.passwordConfirm, {
+    message: "As senhas não conferem!",
+    path: ["passwordConfirm"],
+})
 
 export const SignUp = () => {
     const [name, setName] = useState("")
@@ -11,7 +24,27 @@ export const SignUp = () => {
 
     const onSubmit = (e: React.FormEvent) => {
         e.preventDefault()
-        console.log(name, email, password, passwordConfirm)
+
+        try {
+            setIsLoading(true)
+
+            const data = signUpSchema.parse({
+                name,
+                email,
+                password,
+                passwordConfirm,
+            })
+
+            console.log(data)
+        } catch (error) {
+            if (error instanceof z.ZodError) {
+                return alert(error.issues[0].message)
+            }
+
+            alert("Não foi possível cadastrar o usuário, tente novamente mais tarde.")
+        } finally {
+            setIsLoading(false)
+        }
     }
 
     return (
@@ -44,7 +77,7 @@ export const SignUp = () => {
                 legend="Confirmação da Senha"
                 type="password"
                 placeholder="123456"
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(e) => setPasswordConfirm(e.target.value)}
             />
 
             <Button isLoading={isLoading} type="submit">
