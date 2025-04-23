@@ -3,7 +3,8 @@ import { createContext, ReactNode, useEffect, useState } from "react";
 type AuthContextProps = {
     isLoading: boolean
     session: null | UserAPIResponse
-    save: (data: UserAPIResponse) => void
+    save: (data: UserAPIResponse) => void,
+    remove: () => void
 }
 
 const LOCAL_STORAGE_KEY = "@refund"
@@ -18,6 +19,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         localStorage.setItem(`${LOCAL_STORAGE_KEY}:user`, JSON.stringify(data.user))
         localStorage.setItem(`${LOCAL_STORAGE_KEY}:token`, data.token)
         setSession(data)
+    }
+
+    const remove = () => {
+        setSession(null)
+        localStorage.removeItem(`${LOCAL_STORAGE_KEY}:user`)
+        localStorage.removeItem(`${LOCAL_STORAGE_KEY}:user`)
+
+        window.location.assign("/")
     }
 
     const loadUser = () => {
@@ -39,7 +48,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }, [])
 
     return (
-        <AuthContexts.Provider value={{ session, save, isLoading }}>
+        <AuthContexts.Provider value={{ session, save, isLoading, remove }}>
             {children}
         </AuthContexts.Provider>
     )
