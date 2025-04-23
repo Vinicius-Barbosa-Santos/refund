@@ -8,15 +8,8 @@ import { useAuth } from "../hooks/useAuth";
 
 const isLoading = false
 
-const session = {
-    user: {
-        role: "",
-    }
-}
-
 export const Routes = () => {
-    const context = useAuth()
-    console.log(context)
+    const { session } = useAuth()
 
     const Route = () => {
         switch (session?.user.role) {
