@@ -6,10 +6,8 @@ import { ManagerRoutes } from "./ManagerRoutes";
 import Loading from "../components/Loading";
 import { useAuth } from "../hooks/useAuth";
 
-const isLoading = false
-
 export const Routes = () => {
-    const { session } = useAuth()
+    const { session, isLoading } = useAuth()
 
     const Route = () => {
         switch (session?.user.role) {

@@ -1,6 +1,7 @@
-import { createContext, ReactNode, useState } from "react";
+import { createContext, ReactNode, useEffect, useState } from "react";
 
 type AuthContextProps = {
+    isLoading: boolean
     session: null | UserAPIResponse
     save: (data: UserAPIResponse) => void
 }
@@ -11,6 +12,7 @@ export const AuthContexts = createContext({} as AuthContextProps)
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const [session, setSession] = useState<null | UserAPIResponse>(null)
+    const [isLoading, setIsLoading] = useState(true)
 
     const save = (data: UserAPIResponse) => {
         localStorage.setItem(`${LOCAL_STORAGE_KEY}:user`, JSON.stringify(data.user))
@@ -18,8 +20,26 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setSession(data)
     }
 
+    const loadUser = () => {
+        const user = localStorage.getItem(`${LOCAL_STORAGE_KEY}:user`)
+        const token = localStorage.getItem(`${LOCAL_STORAGE_KEY}:token`)
+
+        if (user && token) {
+            setSession({
+                token,
+                user: JSON.parse(user),
+            })
+        }
+
+        setIsLoading(false)
+    }
+
+    useEffect(() => {
+        loadUser()
+    }, [])
+
     return (
-        <AuthContexts.Provider value={{ session, save }}>
+        <AuthContexts.Provider value={{ session, save, isLoading }}>
             {children}
         </AuthContexts.Provider>
     )
