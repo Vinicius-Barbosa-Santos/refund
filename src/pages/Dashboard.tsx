@@ -45,6 +45,12 @@ export const Dashboard = () => {
         }
     }
 
+    const onSubmit = (e: React.FormEvent) => {
+        e.preventDefault()
+
+        fetchRefunds()
+    }
+
     const handlePagination = (action: "next" | "previous") => {
         setPage((prevPage) => {
             if (action === "next" && prevPage < totalOfPages) {
@@ -66,7 +72,7 @@ export const Dashboard = () => {
         <div className="bg-gray-500 rounded-xl p-10 md:min-w-[768px]">
             <h1 className="text-gray-100 font-bold text-xl flex-1">Solicitações</h1>
 
-            <form onSubmit={fetchRefunds} className="flex flex-1 items-center justify-between pb-6 border-b-[1px] border-b-gray-400 md:flex-row gap-2 mt-6">
+            <form onSubmit={onSubmit} className="flex flex-1 items-center justify-between pb-6 border-b-[1px] border-b-gray-400 md:flex-row gap-2 mt-6">
                 <Input onChange={(e) => setName(e.target.value)} placeholder="Pesquisar pelo nome" />
 
                 <Button type="submit" variant="icon">
