@@ -1,6 +1,6 @@
 import searchSvg from "../assets/search.svg";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Input } from "../components/Input";
 import { Button } from "../components/Button";
 import { RefundItem, RefundItemProps } from "../components/RefundItem";
@@ -8,6 +8,8 @@ import { RefundItem, RefundItemProps } from "../components/RefundItem";
 import { CATEGORIES } from "../utils/categories";
 import { formatCurrency } from "../utils/formatCurrency";
 import { Pagination } from "../components/Pagination";
+import { api } from "../services/api";
+import { AxiosError } from "axios";
 
 const REFUND_EXAMPLE = {
     id: "123",
@@ -20,12 +22,25 @@ const REFUND_EXAMPLE = {
 export const Dashboard = () => {
     const [name, setName] = useState("")
     const [page, setPage] = useState(1)
-    const [totalOfPages, setTotalOfPages] = useState(10)
+    const [totalOfPages, setTotalOfPages] = useState(0)
     const [refunds, setRefunds] = useState<RefundItemProps[]>([REFUND_EXAMPLE])
 
-    const fetchRefunds = (e: React.FormEvent) => {
-        e.preventDefault()
-        console.log(name)
+    const PER_PAGE = 5
+
+    const fetchRefunds = async () => {
+        try {
+            const response = await api.get(`/refunds?name=${name.trim()}&page=${page}&perPage=${PER_PAGE}`)
+
+            console.log(response.data)
+        } catch (error) {
+            console.log(error)
+
+            if (error instanceof AxiosError) {
+                return alert(error.response?.data.message)
+            }
+
+            alert("Não foi possível carregar!")
+        }
     }
 
     const handlePagination = (action: "next" | "previous") => {
@@ -40,6 +55,10 @@ export const Dashboard = () => {
             return prevPage
         })
     }
+
+    useEffect(() => {
+        fetchRefunds()
+    }, [])
 
     return (
         <div className="bg-gray-500 rounded-xl p-10 md:min-w-[768px]">
