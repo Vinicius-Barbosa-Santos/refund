@@ -11,19 +11,11 @@ import { Pagination } from "../components/Pagination";
 import { api } from "../services/api";
 import { AxiosError } from "axios";
 
-const REFUND_EXAMPLE = {
-    id: "123",
-    name: "Vinícius",
-    category: "Transporte",
-    amount: formatCurrency(34.5),
-    categoryImg: CATEGORIES["transport"].icon
-}
-
 export const Dashboard = () => {
     const [name, setName] = useState("")
     const [page, setPage] = useState(1)
     const [totalOfPages, setTotalOfPages] = useState(0)
-    const [refunds, setRefunds] = useState<RefundItemProps[]>([REFUND_EXAMPLE])
+    const [refunds, setRefunds] = useState<RefundItemProps[]>([])
 
     const PER_PAGE = 5
 
@@ -31,7 +23,17 @@ export const Dashboard = () => {
         try {
             const response = await api.get<RefundsPaginationAPIResponse>(`/refunds?name=${name.trim()}&page=${page}&perPage=${PER_PAGE}`)
 
-            console.log(response.data.refunds[0].name)
+            setRefunds(
+                response.data.refunds.map((refund) => ({
+                    id: refund.id,
+                    name: refund.user.name,
+                    category: refund.name,
+                    amount: formatCurrency(refund.amount),
+                    categoryImg: CATEGORIES[refund.category].icon
+                }))
+            )
+
+            setTotalOfPages(response.data.pagination.totalPages)
         } catch (error) {
             console.log(error)
 
