@@ -139,7 +139,7 @@ export const Refund = () => {
             </div>
 
             {params.id && fileURL ? (
-                <a href="https://www.rocketseat.com.br/" target="_blank" className="text-sm text-green-100 
+                <a href={`http://localhost:8080/uploads/${fileURL}`} target="_blank" className="text-sm text-green-100 
                     font-semibold flex items-center justify-center gap-2 my-6 hover:opacity-70 transition ease-linear">
                     <img src={fileSvg} alt="Ícone do arquivo" />
                     Abrir comprovante!
